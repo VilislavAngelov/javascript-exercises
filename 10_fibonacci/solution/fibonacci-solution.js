@@ -1,27 +1,16 @@
-const fibonacci = function(countArg) {
-    // checks argument's type and makes sure we use 
-    // a number throughout rest of function.
-    let count
-    if (typeof countArg !== 'number') {
-        count = parseInt(countArg)
-    } else {
-        count = countArg
-    }
-
+const fibonacci = (countArg, memo = { 0: 0, 1: 1 }) => {
+    // Parse countArg as an integer if it's not already a number
+    const count = typeof countArg === 'number' ? countArg : parseInt(countArg);
+    
+    // Handle negative numbers
     if (count < 0) return "OOPS";
-    if (count == 0) return 0;
+    
+    // Check if the result for this count is already computed
+    if (memo[count] !== undefined) return memo[count];
 
-    let firstPrev = 1;
-    let secondPrev = 0;
-
-    for (let i = 2; i <= count; i++) {
-        let current = firstPrev + secondPrev;
-        secondPrev = firstPrev;
-        firstPrev = current;
-    }
-
-    return firstPrev;
-
+    // Recursively calculate and store result in memo
+    memo[count] = fibonacci(count - 1, memo) + fibonacci(count - 2, memo);
+    return memo[count];
 };
 
 // Another way to do it is by using an iterative approach with an array containing two values, 0 and 1.
